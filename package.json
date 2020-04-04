@@ -1,0 +1,23 @@
+{
+  "name": "otel-workshop-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/signalfx/otel-workshop-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/signalfx/otel-workshop-node/issues"
+  },
+  "homepage": "https://github.com/signalfx/otel-workshop-node#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^0.6.0",
+    "@opentelemetry/exporter-collector": "^0.6.0",
+    "@opentelemetry/exporter-zipkin": "^0.6.0",
+    "@opentelemetry/node": "^0.6.0",
+    "@opentelemetry/plugin-express": "^0.5.2",
+    "@opentelemetry/plugin-http": "^0.5.2",
+    "@opentelemetry/plugin-https": "^0.5.2",
+    "@opentelemetry/tracing": "^0.6.0",
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  }
+}
