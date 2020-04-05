@@ -14,7 +14,7 @@ The following modifications can be made:
 This modifications make it possible to run this workshop in other environments.
 For example, to run locally in Docker, the following changes could be made:
 
-* In `.flaskenv` set the listen port to `3002`
+* In `.env` set the listen port to `3002`
 * In `.env` set the call host to `host.docker.internal`
 
 ## Running the app
