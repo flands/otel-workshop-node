@@ -7,7 +7,7 @@ node`. For every request it receives, it should call the Java service at
 
 The following modifications can be made:
 
-* The listen port can be modified by editing `.env`
+* The `SERVER_PORT` can be modified by editing `.env`
 * The call destination can be modified by setting  `JAVA_REQUEST_ENDPOINT` in `.env`
 
 The `.env` file can be used to allow this workshop to be run
@@ -84,7 +84,7 @@ Note: The recommended deployment model for OpenTelemetry is to have
 applications export in OpenTelemetry (OTLP) format to the OpenTelemetry
 Collector and have the OpenTelemetry Collector send to your back-end(s) of
 choice. OTLP uses gRPC and unfortunately it does not appear Glitch supports
-gRPC In addition, the OpenTelemetry JavaScript instrumentation only supports
+gRPC. In addition, the OpenTelemetry JavaScript instrumentation only supports
 OpenCensus format (this should be updated shortly). As a result, this workshop
 emits in Zipkin format.
 
