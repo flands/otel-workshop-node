@@ -3,8 +3,8 @@
 This app listens on port `3000` (443 when accessing from outside glitch) and
 exposes a single endpoint at `/` that responds with the string `hello from
 node`. For every request it receives, it calls the Java service at
-`http://localhost:8083/` and appends the response from the Node service it's
-own response.
+`https://signalfx-otel-workshop-java.glitch.me` and appends the response from
+the Node service it's own response.
 
 The following modifications can be made:
 
@@ -15,14 +15,15 @@ This modifications make it possible to run this workshop in other environments.
 For example, to run locally in Docker, the following changes could be made:
 
 * In `.env` set the listen port to `3002`
-* In `.env` set the call host to `host.docker.internal`
+* In `.env` set the call host to `https://host.docker.internal:3003`
 
 ## Running the app
 
 You'll need NodeJS, Yarn and Make to be able to run the service.
 
 - Run `make install` to install all dependencies.
-- Run `make run` and then go to http://localhost:3000 to access the app.
+- Run `make run` and then go to https://signalfx-otel-workshop-node.glitch.me
+  to access the app.
 
 ## Instrumenting Python HTTP server and client with OpenTelemetry
 
@@ -84,7 +85,7 @@ app.use(express.json());
 app.get('/', async (req, res) => {
 +  const span = tracer.startSpan('fetch-from-java')
 +  tracer.withSpan(span, () => {
-+    axios.get('http://' + process.env.JAVA_REQUEST_ENDPOINT)
++    axios.get(process.env.JAVA_REQUEST_ENDPOINT)
 +    .then(response => {
 +      res.status(201).send("hello from node\n" + response)
 +      span.end()
@@ -94,7 +95,7 @@ app.get('/', async (req, res) => {
 +      span.end()
 +    })
 +  })
--  axios.get('http://' + process.env.JAVA_REQUEST_ENDPOINT)
+-  axios.get(process.env.JAVA_REQUEST_ENDPOINT)
 -  .then(response => {
 -    res.status(201).send("hello from node\n" + response)
 -  })
