@@ -17,11 +17,11 @@ app.get('/', async (req, res) => {
   tracer.withSpan(span, () => {
     axios.get(process.env.JAVA_REQUEST_ENDPOINT)
     .then(response => {
-      res.status(201).send("hello from node\n" + response)
+      res.status(201).send("hello from node<br>" + response)
       span.end()
     })
     .catch(err => {
-      res.status(201).send("hello from node\n" + "error fetching from java")
+      res.status(201).send("hello from node<br>" + "error fetching from java")
       span.end()
     })
   })
