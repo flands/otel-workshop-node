@@ -1,10 +1,10 @@
-.DEFAULT_GOAL := run 
+.DEFAULT_GOAL := run
 
-.PHONY: run 
+.PHONY: run
 run:
 	node index.js
 
 
-.PHONY: install 
+.PHONY: install
 install:
 	yarn
