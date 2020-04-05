@@ -1,20 +1,36 @@
-## Python Service
+## Node Service
 
-This app listens on port `8081` and exposes a single endpoint at `/` that resposds with the string `hello from node`. For every request it receives, it calls the Java service at `http://localhost:8083/` and appends the response from the Python service it's own response.
+This app listens on port `3000` (443 when accessing from outside glitch) and
+exposes a single endpoint at `/` that responds with the string `hello from
+node`. For every request it receives, it calls the Java service at
+`http://localhost:8083/` and appends the response from the Node service it's
+own response.
+
+The following modifications can be made:
+
+* The listen port can be modified by editing `.env`
+* The call host and port can be modified by editing `.env`
+
+This modifications make it possible to run this workshop in other environments.
+For example, to run locally in Docker, the following changes could be made:
+
+* In `.env` set the listen port to `3002`
+* In `.env` set the call host to `host.docker.internal`
 
 ## Running the app
 
-You'll need NodeJS, Yarn and Make to be able to run the service. 
+You'll need NodeJS, Yarn and Make to be able to run the service.
 
 - Run `make install` to install all dependencies.
-- Run `make run` and then go to http://localhost:8081 to access the app.
+- Run `make run` and then go to http://localhost:3000 to access the app.
 
 ## Instrumenting Python HTTP server and client with OpenTelemetry
 
 ### 1. Install OpenTelemetry packages
 
 ```bash
-yarn add @opentelemetry/api @opentelemetry/node @opentelemetry/tracing @opentelemetry/exporter-collector
+yarn add @opentelemetry/api @opentelemetry/node \
+    @opentelemetry/tracing @opentelemetry/exporter-collector
 ```
 
 ### 2. Configure the tracer in a new tracer.js file
@@ -58,7 +74,6 @@ const express = require('express');
 const axios = require('axios').default;
 
 const app = express();
-const PORT = 8081;
 ```
 
 #### 4. Wrap the fetch operation in a custom span
@@ -69,7 +84,7 @@ app.use(express.json());
 app.get('/', async (req, res) => {
 +  const span = tracer.startSpan('fetch-from-java')
 +  tracer.withSpan(span, () => {
-+    axios.get('http://localhost:8083')
++    axios.get('http://' + process.env.JAVA_REQUEST_ENDPOINT)
 +    .then(response => {
 +      res.status(201).send("hello from node\n" + response)
 +      span.end()
@@ -79,7 +94,7 @@ app.get('/', async (req, res) => {
 +      span.end()
 +    })
 +  })
--  axios.get('http://localhost:8083')
+-  axios.get('http://' + process.env.JAVA_REQUEST_ENDPOINT)
 -  .then(response => {
 -    res.status(201).send("hello from node\n" + response)
 -  })
@@ -88,9 +103,12 @@ app.get('/', async (req, res) => {
 -  })
 });
 
-app.listen(PORT);
+app.listen(process.env.SERVER_PORT);
 ```
 
-Outgoing HTTP requests and incoming requests handled by express will be traced automatically by our tracer. In addition to that we are also generating a custom span and wrapping the outgoing request span with it.
+Outgoing HTTP requests and incoming requests handled by express will be traced
+automatically by our tracer. In addition to that we are also generating a
+custom span and wrapping the outgoing request span with it.
 
-We can run the app again and this time it should emit spans to locally running OpenTelemetry collector.
+We can run the app again and this time it should emit spans to a locally running
+OpenTelemetry Collector.

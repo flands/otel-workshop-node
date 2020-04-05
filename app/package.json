@@ -7,5 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
