@@ -8,16 +8,16 @@ node`. For every request it receives, it should call the Java service at
 The following modifications can be made:
 
 * The `SERVER_PORT` can be modified by editing `.env`
-* The call destination can be modified by setting  `JAVA_REQUEST_ENDPOINT` in `.env`
+* The call destination can be modified by setting  `JAVA_ENDPOINT` in `.env`
 
 The `.env` file can be used to allow this workshop to be run
 in other environments. For example, to run locally, the following changes could
 be made:
 
 * In `.env` set the listen port to `3002`
-* In `.env` set the `JAVA_REQUEST_ENDPOINT` to `http://localhost:3003`
+* In `.env` set the `JAVA_ENDPOINT` to `http://localhost:3003`
 
-To run in Docker, set `JAVA_REQUEST_ENDPOINT` to `http://host.docker.internal:3003`
+To run in Docker, set `JAVA_ENDPOINT` to `http://host.docker.internal:3003`
 
 ## Running the app
 
@@ -122,7 +122,7 @@ app.use(express.json());
 app.get('/', async (req, res) => {
 +  const span = tracer.startSpan('fetch-from-java')
 +  tracer.withSpan(span, () => {
-+    axios.get(process.env.JAVA_REQUEST_ENDPOINT)
++    axios.get(process.env.JAVA_ENDPOINT)
 +    .then(response => {
 +      res.status(201).send("hello from node\n" + response)
 +      span.end()
@@ -132,7 +132,7 @@ app.get('/', async (req, res) => {
 +      span.end()
 +    })
 +  })
--  axios.get(process.env.JAVA_REQUEST_ENDPOINT)
+-  axios.get(process.env.JAVA_ENDPOINT)
 -  .then(response => {
 -    res.status(201).send("hello from node\n" + response)
 -  })
@@ -148,7 +148,7 @@ Note: You will notice multiple environment variables used above. These
 variables should be set in a `.env` file in the same directory as `tracer.js`.
 
 ```bash
-JAVA_REQUEST_ENDPOINT=signalfx-otel-workshop-java.glitch.me
+JAVA_ENDPOINT=signalfx-otel-workshop-java.glitch.me
 SERVER_PORT=3000
 ```
 

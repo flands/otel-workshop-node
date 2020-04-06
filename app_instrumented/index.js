@@ -15,7 +15,7 @@ app.use(express.json());
 app.get('/', async (req, res) => {
   const span = tracer.startSpan('fetch-from-java')
   tracer.withSpan(span, () => {
-    axios.get(process.env.JAVA_REQUEST_ENDPOINT)
+    axios.get(process.env.JAVA_ENDPOINT)
     .then(response => {
       res.status(201).send("hello from node<br>" + response)
       span.end()
